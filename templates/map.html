@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>OpenStreetMap + Flask 연동 예제</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body { font-family: Arial; margin: 0; padding: 0; }
+    #map { height: 400px; }
+    .info-box { padding: 10px; }
+  </style>
+</head>
+<body>
+  <div class="info-box">
+    <form method="POST" action="/adjust_time">
+      <label>사용자 이름: <input type="text" name="user_name" required /></label><br>
+      <label>도보 시간 입력 (분): <input type="number" name="walk_time" required /></label><br>
+      <input type="hidden" id="startLat" name="start_lat">
+      <input type="hidden" id="startLng" name="start_lng">
+      <input type="hidden" id="endLat" name="end_lat">
+      <input type="hidden" id="endLng" name="end_lng">
+      <button type="submit">시간 보정</button>
+    </form>
+    <p id="instruction">지도에서 출발지와 도착지를 차례로 클릭하세요.</p>
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([37.5665, 126.9780], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: 'Map data © OpenStreetMap contributors'
+    }).addTo(map);
+
+    let clickCount = 0;
+    let startMarker = null;
+    let endMarker = null;
+    let routeLine = null;
+
+    map.on('click', function(e) {
+      if (clickCount === 0) {
+        if (startMarker) map.removeLayer(startMarker);
+        startMarker = L.marker(e.latlng).addTo(map).bindPopup("출발지").openPopup();
+        document.getElementById("startLat").value = e.latlng.lat;
+        document.getElementById("startLng").value = e.latlng.lng;
+        clickCount = 1;
+      } else if (clickCount === 1) {
+        if (endMarker) map.removeLayer(endMarker);
+        endMarker = L.marker(e.latlng).addTo(map).bindPopup("도착지").openPopup();
+        document.getElementById("endLat").value = e.latlng.lat;
+        document.getElementById("endLng").value = e.latlng.lng;
+        clickCount = 0;
+
+        if (routeLine) map.removeLayer(routeLine);
+        routeLine = L.polyline([startMarker.getLatLng(), endMarker.getLatLng()], {
+          color: 'blue', weight: 4
+        }).addTo(map);
+        map.fitBounds(routeLine.getBounds());
+      }
+    });
+  </script>
+</body>
+</html>
