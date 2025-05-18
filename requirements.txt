@@ -1,0 +1,4 @@
+cd 경로/to/your/repo
+git add requirements.txt
+git commit -m "Add requirements.txt"
+git push
