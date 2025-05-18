@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>속도 선택</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: 50px auto; text-align: center; }
+    input, button { padding: 10px; margin: 10px 0; width: 80%; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>사용자 설정</h1>
+  <form method="POST" action="/set_speed">
+    <input type="text" name="user_name" placeholder="이름을 입력하세요" required>
+    <button type="submit" name="speed_type" value="slow">느림 (4km/h)</button>
+    <button type="submit" name="speed_type" value="normal">보통 (5km/h)</button>
+    <button type="submit" name="speed_type" value="fast">빠름 (6km/h)</button>
+  </form>
+</body>
+</html>

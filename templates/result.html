@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>보정 결과</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: 50px auto; text-align: center; }
+    .big { font-size: 1.4rem; color: blue; }
+    a { display: inline-block; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>보정 결과</h1>
+  <p><strong>{{ user }}</strong>님의 이동 거리: {{ distance_km }} km</p>
+  <p class="big">예상 소요 시간: {{ corrected_time }} 분</p>
+  <a href="/map?user={{ user }}">다시 시도하기</a>
+</body>
+</html>
